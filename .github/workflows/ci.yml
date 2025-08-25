@@ -1,0 +1,22 @@
+name: CI
+on:
+  push: { branches: [main, develop] }
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP lint
+        run: |
+          find plugin/liveocnj-neighborhoods -type f -name "*.php" -print0 | xargs -0 -n1 php -l
+      - name: Verify jQuery dependency
+        run: |
+          grep -q "wp_enqueue_script(.*\\['jquery'\\]" plugin/liveocnj-neighborhoods/src/Plugin.php \
+            || (echo "Missing ['jquery'] in wp_enqueue_script" && exit 1)
+      - name: Build plugin zip
+        run: bash tools/build-zip.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: liveocnj-neighborhoods
+          path: liveocnj-neighborhoods.zip

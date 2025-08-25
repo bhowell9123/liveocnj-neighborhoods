@@ -1,0 +1,583 @@
+/* OCNJ Neighborhoods Styles (unscoped version for pages without #ocnj-root) */
+
+/* CSS Custom Properties for colors */
+:root {
+  --ocnj-primary: #2563eb;
+  --ocnj-primary-dark: #1d4ed8;
+  --ocnj-text: #333;
+  --ocnj-text-dark: #1f2937;
+  --ocnj-text-muted: #6b7280;
+  --ocnj-bg-light: #f8fafc;
+  --ocnj-border: #e5e7eb;
+  --ocnj-white: #fff;
+  --ocnj-black: #000;
+  --ocnj-black-rgb: 0,0,0;
+  --ocnj-shadow: rgba(0,0,0,.1);
+}
+
+/* Normalize a bit so theme styles don't win */
+* { box-sizing: border-box; }
+.ocnj-wrap { line-height: 1.6; color: var(--ocnj-text); }
+
+/* Visually hidden (for a11y) */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}
+
+/* Breadcrumbs */
+.ocnj-breadcrumbs{max-width:1200px;margin:0 auto 1rem;padding:0 1rem}
+.ocnj-breadcrumbs ol{display:flex;gap:.5rem;list-style:none;padding:0;margin:0;color:var(--ocnj-text-muted)}
+.ocnj-breadcrumbs a{text-decoration:none;color:var(--ocnj-primary)}
+
+/* Buttons */
+.ocnj-btn,
+.ocnj-cta-group a { /* style anchors even if class wasn't added */
+  display:inline-block !important;
+  padding:14px 28px !important;
+  background:var(--ocnj-primary) !important;
+  color:var(--ocnj-white) !important;
+  text-decoration:none !important;
+  border-radius:8px !important;
+  font-weight:600 !important;
+  margin:0 10px 1rem 0 !important;
+  transition:all .3s ease !important;
+  border:2px solid var(--ocnj-primary) !important;
+  font-size:1rem !important;
+}
+.ocnj-btn:hover,
+.ocnj-cta-group a:hover{
+  background:var(--ocnj-primary-dark) !important;
+  transform:translateY(-2px) !important;
+  box-shadow:0 4px 12px rgba(37,99,235,.4) !important;
+  color:var(--ocnj-white) !important;
+}
+.ocnj-btn.ocnj-btn-outline{
+  background:transparent !important;border:2px solid var(--ocnj-white) !important;color:var(--ocnj-white) !important;
+}
+.ocnj-btn.ocnj-btn-outline:hover{
+  background:var(--ocnj-white) !important;color:var(--ocnj-primary) !important;border-color:var(--ocnj-white) !important;
+}
+
+/* CTA Group for IDX links */
+.ocnj-cta-group{
+  display:grid !important;grid-template-columns:repeat(auto-fit,minmax(200px,1fr)) !important;
+  gap:10px !important;margin:2rem 0 !important;
+}
+.ocnj-cta-group .ocnj-btn{margin:0 !important;text-align:center !important;white-space:nowrap !important;overflow:hidden !important;text-overflow:ellipsis !important;}
+@media (max-width:768px){ .ocnj-cta-group{ grid-template-columns:1fr !important; } }
+
+/* Hero Section - properly scoped for different page types */
+/* Archive page hero */
+.post-type-archive-neighborhood .ocnj-hero {
+  position:relative !important;
+  min-height:80vh !important;
+  overflow:hidden !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  color:#fff !important;
+  margin:0 0 4rem 0 !important;
+  background-attachment: initial !important;
+}
+
+/* Default hero for any other page type */
+body:not(.single-neighborhood):not(.post-type-archive-neighborhood) .ocnj-hero {
+  position:relative !important;
+  min-height:80vh !important;
+  overflow:hidden !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  color:#fff !important;
+  margin:0 0 4rem 0 !important;
+  background-attachment: initial !important;
+}
+
+/* Reliable gap under sticky header on the neighborhoods archive */
+body.post-type-archive-neighborhood .ocnj-hero{
+  /* border-top avoids margin-collapsing and plays nice with sticky headers */
+  border-top: 16px solid transparent !important;
+}
+
+@media (max-width: 1024px){
+  body.post-type-archive-neighborhood .ocnj-hero{ border-top-width: 12px !important; }
+}
+@media (max-width: 768px){
+  body.post-type-archive-neighborhood .ocnj-hero{ border-top-width: 10px !important; }
+}
+
+/* keep anchor jumps tidy too */
+body.post-type-archive-neighborhood .ocnj-hero{ scroll-margin-top: 96px; }
+
+/* Background image layer */
+.ocnj-hero-bg{ position:absolute !important; inset:0 !important; z-index:0 !important; overflow:hidden !important; }
+.ocnj-hero-bg img{ display:block !important; width:100% !important; height:100% !important; object-fit:cover !important; }
+.ocnj-hero-shade{ position:absolute !important; inset:0 !important; z-index:1 !important; background:linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)) !important; }
+
+/* Text/content on top */
+.ocnj-hero__inner{ position:relative !important; z-index:2 !important; max-width:800px !important; padding:3rem 2rem !important; }
+.ocnj-hero h1{
+  font-size:clamp(2.5rem,5vw,3.5rem) !important;font-weight:700 !important;margin-bottom:.5rem !important;
+  text-shadow:2px 2px 4px rgba(0,0,0,.7) !important;line-height:1.1 !important;color:#fff !important;
+}
+.ocnj-hero .ocnj-hero-subtitle{
+  font-size:clamp(1rem,2vw,1.25rem) !important;margin-bottom:2.5rem !important;
+  color:rgba(255,255,255,.95) !important;text-shadow:1px 1px 2px rgba(0,0,0,.7) !important;
+}
+
+/* Stats */
+.ocnj-stats{
+  background:rgba(255,255,255,.95) !important;backdrop-filter:blur(10px) !important;border-radius:16px !important;
+  padding:2.5rem 2rem !important;margin-top:3rem !important;display:grid !important;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr)) !important;gap:1.5rem !important;
+  color:#333 !important;box-shadow:0 8px 32px rgba(0,0,0,.1) !important;
+}
+.ocnj-stat{text-align:center !important;}
+.ocnj-stat-value{font-size:1.75rem !important;font-weight:700 !important;color:#2563eb !important;margin-bottom:.25rem !important;display:block !important;white-space:nowrap !important;}
+.ocnj-stat-label{font-size:.875rem !important;color:#666 !important;font-weight:500 !important;}
+
+/* Stats flex layout for dot separators */
+.ocnj-stats {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 1rem !important;
+  align-items: center !important;
+}
+
+.ocnj-stats li {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+.ocnj-stats li + li::before {
+  content: "•";
+  margin: 0 18px;
+  opacity: .6;
+}
+
+/* Sections */
+.ocnj-section{ padding:5rem 2rem !important; max-width:1200px !important; margin:0 auto !important; }
+.ocnj-section h2{
+  font-size:clamp(2rem,4vw,2.75rem) !important;font-weight:700 !important;text-align:center !important;
+  margin-bottom:1.5rem !important;color:var(--ocnj-text-dark) !important;
+}
+.ocnj-section > p.section-intro{
+  font-size:1.125rem !important;text-align:center !important;color:var(--ocnj-text-muted) !important;
+  max-width:700px !important;margin:0 auto 4rem !important;
+}
+
+/* Neighborhood Cards */
+.ocnj-neighborhoods-grid{
+  display:grid !important;grid-template-columns:repeat(auto-fit,minmax(380px,1fr)) !important;
+  gap:2.5rem !important;margin-top:4rem !important;justify-items:center !important;max-width:1200px !important;margin-left:auto !important;margin-right:auto !important;
+}
+.ocnj-neighborhood-card{
+  background:#fff !important;border-radius:16px !important;box-shadow:0 8px 25px var(--ocnj-shadow) !important;overflow:hidden !important;
+  transition:all .3s ease !important;cursor:pointer !important;position:relative !important;border:1px solid rgba(0,0,0,.05) !important;
+  width:100% !important;max-width:400px !important;
+}
+.ocnj-neighborhood-card:hover{ transform:translateY(-8px) !important; box-shadow:0 20px 40px rgba(0,0,0,.15) !important; }
+/* Your markup uses a wrapper <a>; make it clickable but keep layout */
+.ocnj-card-link{ display:block !important; color:inherit !important; text-decoration:none !important; }
+.ocnj-card-link:focus-visible,
+.ocnj-neighborhood-card[role="button"]:focus-visible{
+  outline:3px solid #2563eb !important; outline-offset:3px !important; border-radius:16px !important;
+}
+.ocnj-card-image-container{ position:relative !important; overflow:hidden !important; }
+.ocnj-card-image{ width:100% !important; height:220px !important; object-fit:cover !important; transition:transform .3s ease !important; }
+.ocnj-neighborhood-card:hover .ocnj-card-image{ transform:scale(1.05) !important; }
+.ocnj-price-badge{
+  position:absolute !important; top:1rem !important; right:1rem !important; background:var(--ocnj-primary) !important; color:#fff !important;
+  padding:.5rem 1rem !important; border-radius:8px !important; font-weight:600 !important; font-size:.875rem !important; box-shadow:0 2px 8px rgba(37,99,235,.3) !important;
+}
+.ocnj-card-content{ padding:2rem !important; }
+.ocnj-card-title{ font-size:1.375rem !important; font-weight:700 !important; margin-bottom:.5rem !important; color:var(--ocnj-text-dark) !important; }
+.ocnj-card-description{ color:var(--ocnj-text-muted) !important; line-height:1.6 !important; font-size:.95rem !important; }
+
+/* Card chips */
+.ocnj-card-chips{ margin-top:.75rem !important; display:flex !important; flex-wrap:wrap !important; gap:.5rem !important; }
+.ocnj-chip{ background:#eef2ff !important; color:#374151 !important; font-size:.8rem !important; padding:.25rem .5rem !important; border-radius:999px !important; }
+
+/* Expert section */
+.ocnj-expert-section{ background:linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%) !important; padding:5rem 2rem !important; margin:4rem 0 !important; }
+.ocnj-expert-card{ background:#fff !important; border-radius:20px !important; padding:4rem 3rem !important; max-width:900px !important; margin:0 auto !important; box-shadow:0 20px 50px rgba(0,0,0,.1) !important; text-align:center !important; }
+.ocnj-expert-image{ width:120px !important; height:120px !important; border-radius:50% !important; object-fit:cover !important; margin:0 auto 2rem !important; display:block !important; border:4px solid #e5e7eb !important; }
+.ocnj-quote{ font-size:1.25rem !important; line-height:1.8 !important; color:#374151 !important; margin-bottom:2.5rem !important; font-style:italic !important; position:relative !important; }
+.ocnj-quote::before{ content:"\201C" !important; font-size:4rem !important; color:#2563eb !important; position:absolute !important; top:-1rem !important; left:-1rem !important; font-family:serif !important; }
+.ocnj-expert-name{ font-size:1.375rem !important; font-weight:700 !important; margin-bottom:.5rem !important; color:#1f2937 !important; }
+.ocnj-expert-title{ color:#2563eb !important; font-weight:600 !important; margin-bottom:2rem !important; }
+
+/* FAQ section */
+.ocnj-faq-section{ background:#fff !important; padding:5rem 2rem !important; }
+.ocnj-faq-section .table-of-contents{ background:#f9fafb; border:1px solid #e5e7eb; padding:2rem; border-radius:12px; margin-bottom:4rem; }
+.ocnj-faq-section .table-of-contents h3{ margin:0 0 1rem 0; font-size:1.25rem; }
+.ocnj-faq-section .table-of-contents ul{ list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1rem; }
+.ocnj-faq-section .table-of-contents a{ text-decoration:none; color:#2563eb; font-weight:500; }
+.ocnj-faq-section .ocnj-faq-grid{ max-width:900px; margin:0 auto; }
+.ocnj-faq-section h2{ text-align:left; border-bottom:2px solid #e5e7eb; padding-bottom:1rem; margin-top:4rem; }
+.ocnj-faq-item{ margin-bottom:2rem; }
+.ocnj-faq-item h3{ font-size:1.25rem; margin:0 0 1rem 0; }
+.ocnj-faq-item p{ margin:0; }
+.ocnj-faq-item p strong{ display:block; margin-bottom:.5rem; font-size:1.1rem; color:#1f2937; }
+
+/* Related neighborhoods */
+.ocnj-related-neighborhoods{ margin:4rem 0 !important; padding:2rem !important; background-color:var(--ocnj-bg-light) !important; border-radius:16px !important; box-shadow:0 4px 12px var(--ocnj-shadow) !important; }
+.ocnj-related-neighborhoods__title{ font-size:1.75rem !important; font-weight:700 !important; color:var(--ocnj-text-dark) !important; text-align:center !important; margin-bottom:2rem !important; }
+.ocnj-related-neighborhoods__grid{ display:grid !important; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)) !important; gap:1.5rem !important; }
+.ocnj-related-neighborhoods__card{ background-color:#fff !important; border-radius:12px !important; padding:1.5rem !important; box-shadow:0 4px 8px var(--ocnj-shadow) !important; transition:transform .3s ease, box-shadow .3s ease !important; }
+.ocnj-related-neighborhoods__card:hover{ transform:translateY(-5px) !important; box-shadow:0 8px 16px var(--ocnj-shadow) !important; }
+.ocnj-related-neighborhoods__card-title{ font-size:1.25rem !important; font-weight:600 !important; margin-bottom:.75rem !important; color:var(--ocnj-text-dark) !important; }
+.ocnj-related-neighborhoods__card-link{ color:var(--ocnj-primary) !important; text-decoration:none !important; transition:color .3s ease !important; }
+.ocnj-related-neighborhoods__card-link:hover{ color:var(--ocnj-primary-dark) !important; text-decoration:underline !important; }
+.ocnj-related-neighborhoods__card-description{ color:var(--ocnj-text-muted) !important; font-size:.95rem !important; line-height:1.5 !important; margin-bottom:1.25rem !important; }
+.ocnj-related-neighborhoods__card-button{ display:inline-block !important; padding:.5rem 1rem !important; background-color:var(--ocnj-primary) !important; color:#fff !important; border-radius:6px !important; font-weight:500 !important; font-size:.875rem !important; text-decoration:none !important; transition:background-color .3s ease !important; }
+.ocnj-related-neighborhoods__card-button:hover{ background-color:var(--ocnj-primary-dark) !important; text-decoration:none !important; }
+
+/* Article bits */
+.ocnj-neighborhood-detail h2,
+.ocnj-neighborhood-detail h3 { margin:1.5rem 0 .75rem; color:#1f2937; font-weight:700; }
+.ocnj-neighborhood-detail p { margin:0 0 1rem; color:#374151; }
+.ocnj-neighborhood-detail ul { margin:0 0 1.25rem 1.25rem; }
+
+/* Responsive tweaks */
+@media (max-width:1024px){
+  .post-type-archive-neighborhood .ocnj-hero,
+  body:not(.single-neighborhood):not(.post-type-archive-neighborhood) .ocnj-hero{
+    background-attachment:scroll !important;
+  }
+}
+@media (max-width:768px){
+  .post-type-archive-neighborhood .ocnj-hero,
+  body:not(.single-neighborhood):not(.post-type-archive-neighborhood) .ocnj-hero{
+    min-height:70vh !important;
+    margin:0 0 3rem 0 !important;
+  }
+  .ocnj-hero h1{ font-size:2.5rem !important; }
+  .ocnj-neighborhoods-grid{ grid-template-columns:1fr !important; gap:1.5rem !important; }
+  .ocnj-section{ padding:3rem 1rem !important; }
+  .ocnj-stats{ grid-template-columns:repeat(2,1fr) !important; }
+  .ocnj-expert-card{ padding:3rem 2rem !important; }
+}
+
+/* --- Card Grid --- */
+.ocnj-card-grid{display:grid !important;grid-template-columns:repeat(auto-fill,minmax(320px,1fr)) !important;gap:28px !important;margin-top:24px !important}
+.ocnj-card{background:#fff !important;border-radius:20px !important;box-shadow:0 8px 24px rgba(0,0,0,.08) !important;overflow:hidden !important;display:flex !important;flex-direction:column !important}
+.ocnj-card__media img{display:block !important;width:100% !important;height:220px !important;object-fit:cover !important}
+.ocnj-card__placeholder{width:100% !important;height:220px !important;background:#e5e7eb !important}
+.ocnj-card__body{padding:18px 20px !important}
+.ocnj-card__title{font-size:1.25rem !important;line-height:1.25 !important;margin:0 0 8px !important}
+.ocnj-card__sub{color:#4b5563 !important;margin:0 0 12px !important}
+.ocnj-card-chips{display:flex !important;flex-wrap:wrap !important;gap:8px !important;margin:0 0 12px !important;padding:0 !important;list-style:none !important}
+.ocnj-card-chips li{background:#f1f5f9 !important;border-radius:999px !important;padding:6px 10px !important;font-size:.875rem !important;color:#111827 !important;list-style:none !important}
+.ocnj-card__link a{text-decoration:none !important}
+
+/* Specific styles for archive page grid */
+.post-type-archive-neighborhood #ocnj-profiles .ocnj-card-grid {
+  display:grid !important;
+  gap:32px !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+}
+
+/* Card image sizing */
+.ocnj-card__media { position: relative; }
+.ocnj-card__media img{
+  display:block;
+  width:100%;
+  height:220px;         /* keep your grid tidy */
+  object-fit:cover;
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
+}
+
+/* Section anchor offset so sticky header doesn't cover titles */
+#ocnj-profiles,
+#ocnj-faq,
+.ocnj-map-intro,
+.ocnj-hero { scroll-margin-top: 96px; } /* adjust to your header height */
+
+/* Optional: give hero/map sections a bit more breathing room if header overlaps */
+.ocnj-map-intro .ocnj-section__inner,
+.ocnj-hero .ocnj-hero__inner { padding-top: 12px; }
+
+/* --- Hero subtitle: support both class names --- */
+.ocnj-hero__sub,
+.ocnj-hero .ocnj-hero-subtitle{
+  font-size:clamp(1rem,2vw,1.25rem) !important;
+  margin-bottom:2.5rem !important;
+  color:rgba(255,255,255,.95) !important;
+  text-shadow:1px 1px 2px rgba(0,0,0,.7) !important;
+}
+
+/* --- Stats container --- */
+.ocnj-stats{
+  list-style:none !important;         /* kill bullets */
+  padding:2rem !important;
+  margin:3rem auto 0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(4,1fr) !important; /* stay on one row */
+  gap:2rem !important;
+  max-width: 960px !important;        /* keeps it tidy */
+  background:rgba(255,255,255,.95) !important;
+  backdrop-filter:blur(10px) !important;
+  border-radius:16px !important;
+  box-shadow:0 8px 32px rgba(0,0,0,.10) !important;
+}
+.ocnj-stats li{
+  list-style:none !important;         /* extra safety */
+  margin:0 !important;
+  padding:0 !important;
+  text-align:center !important;
+  position:relative !important;
+}
+/* Extra specificity for archive page to ensure bullets are removed */
+.post-type-archive-neighborhood .ocnj-stats,
+.post-type-archive-neighborhood .ocnj-stats li {
+  list-style:none !important;
+}
+
+/* optional dot separators between items */
+.ocnj-stats li:not(:last-child)::after{
+  content:"";
+  position:absolute; top:50%; right:-1rem; transform:translateY(-50%);
+  width:6px; height:6px; border-radius:50%;
+  background:rgba(0,0,0,.12);
+}
+
+/* Support BOTH class spellings for value/label */
+.ocnj-stat-value,
+.ocnj-stat__value{
+  display:block !important;
+  font-size:1.75rem !important;
+  font-weight:700 !important;
+  color:#2563eb !important;
+  margin-bottom:.25rem !important;
+  white-space:nowrap !important;
+  font-variant-numeric: tabular-nums; /* cleaner digits */
+}
+
+/* Add percentage symbol to Year-over-Year Change stat */
+/* Use attribute selector for more specificity */
+.ocnj-stat-label:nth-of-type(1),
+.ocnj-stat__label:nth-of-type(1) {
+  position: relative !important;
+}
+
+/* Use a more robust approach with data attribute */
+.ocnj-stats .ocnj-stat:nth-child(4) .ocnj-stat-value,
+.ocnj-stats .ocnj-stat:nth-child(4) .ocnj-stat__value {
+  position: relative !important;
+}
+.ocnj-stats .ocnj-stat:nth-child(4) .ocnj-stat-value::after,
+.ocnj-stats .ocnj-stat:nth-child(4) .ocnj-stat__value::after {
+  content: "%" !important;
+  display: inline !important;
+  position: static !important;
+  margin-left: 1px !important;
+}
+
+/* Ensure the percentage sign stays visible */
+.ocnj-stats .ocnj-stat:nth-child(4) .ocnj-stat-value,
+.ocnj-stats .ocnj-stat:nth-child(4) .ocnj-stat__value {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.ocnj-stat-label,
+.ocnj-stat__label{
+  display:block !important;
+  font-size:.95rem !important;
+  color:#666 !important;
+  font-weight:500 !important;
+}
+
+/* Responsive: turn into 2x2 on small screens */
+@media (max-width: 768px){
+  .ocnj-stats{ grid-template-columns:repeat(2,1fr) !important; gap:1.25rem !important; }
+  .ocnj-stats li:not(:last-child)::after{ display:none; }
+}
+
+/* Standalone FAQ Components */
+.table-of-contents{background:#f9fafb;border:1px solid #e5e7eb;padding:2rem;border-radius:12px;margin-bottom:4rem}
+.table-of-contents h3{margin:0 0 1rem 0;font-size:1.25rem}
+.table-of-contents ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.table-of-contents a{text-decoration:none;color:#2563eb;font-weight:500}
+
+.ocnj-faq-grid{max-width:900px;margin:0 auto}
+.ocnj-faq-grid h2{text-align:left;border-bottom:2px solid #e5e7eb;padding-bottom:1rem;margin-top:4rem}
+.ocnj-faq-item{margin:0 0 2rem}
+.ocnj-faq-item h3{margin:.75rem 0 1rem 0;font-size:1.05rem}
+
+/* guaranteed breathing room below sticky header */
+.post-type-archive-neighborhood .ocnj-hero--spaced { padding-top:16px !important; }
+
+@media (max-width:1024px){ .post-type-archive-neighborhood .ocnj-hero--spaced { padding-top:12px !important; } }
+@media (max-width:768px){  .post-type-archive-neighborhood .ocnj-hero--spaced { padding-top:10px !important; } }
+
+/* === Kill the seam above the hero on the neighborhoods landing === */
+/* Target the specific landing (post 175056) + the alternate page id if used */
+body.postid-175056 .site-content,
+body.postid-175056 #content,
+body.postid-175056 .content-area,
+body.postid-175056 .entry-content,
+body.page-id-169371 .site-content,
+body.page-id-169371 #content,
+body.page-id-169371 .content-area,
+body.page-id-169371 .entry-content{
+  padding-top: 0 !important;       /* remove theme's top padding that creates the grey band */
+  margin-top: 0 !important;
+  background: transparent !important;
+}
+
+/* Remove any bottom divider/shadow the header is adding */
+body.postid-175056 #masthead,
+body.postid-175056 .site-header,
+body.page-id-169371 #masthead,
+body.page-id-169371 .site-header{
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Close any 1px seam just in case */
+body.postid-175056 .ocnj-hero,
+body.page-id-169371 .ocnj-hero{
+  margin-top: -1px !important;     /* pulls hero up underneath header by 1px */
+  border-top: 0 !important;        /* ensure no debug border left */
+}
+
+/* Put the breathing room INSIDE the hero (text/buttons drop; image stays flush) */
+body.postid-175056 .ocnj-hero .ocnj-hero__inner,
+body.page-id-169371 .ocnj-hero .ocnj-hero__inner{
+  padding-top: 18px !important;
+}
+@media (max-width:1024px){
+  body.postid-175056 .ocnj-hero .ocnj-hero__inner,
+  body.page-id-169371 .ocnj-hero .ocnj-hero__inner{ padding-top: 14px !important; }
+}
+@media (max-width:768px){
+  body.postid-175056 .ocnj-hero .ocnj-hero__inner,
+  body.page-id-169371 .ocnj-hero .ocnj-hero__inner{ padding-top: 12px !important; }
+}
+
+/* Ensure the bg layers still start at the very top of the hero */
+body.postid-175056 .ocnj-hero .ocnj-hero-bg,
+body.postid-175056 .ocnj-hero .ocnj-hero-shade,
+body.page-id-169371 .ocnj-hero .ocnj-hero-bg,
+body.page-id-169371 .ocnj-hero .ocnj-hero-shade{
+  top: 0 !important; /* override any accidental offset */
+}
+
+/* Archive page fix - consolidated with other archive styles */
+body.post-type-archive-neighborhood .site-content,
+body.post-type-archive-neighborhood #content,
+body.post-type-archive-neighborhood .content-area,
+body.post-type-archive-neighborhood .entry-content{
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+  background: transparent !important;
+}
+
+body.post-type-archive-neighborhood #masthead,
+body.post-type-archive-neighborhood .site-header{
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+body.post-type-archive-neighborhood .ocnj-hero{
+  margin-top: -1px !important;
+  border-top: 0 !important;
+}
+
+body.post-type-archive-neighborhood .ocnj-hero .ocnj-hero__inner{
+  padding-top: 18px !important;
+}
+
+body.post-type-archive-neighborhood .ocnj-hero .ocnj-hero-bg,
+body.post-type-archive-neighborhood .ocnj-hero .ocnj-hero-shade{
+  top: 0 !important;
+}
+
+/* Single neighborhood hero image behavior */
+.single-neighborhood .ocnj-hero {
+  min-height: 65vh; /* show more of the photo, reduces perceived zoom */
+}
+
+.single-neighborhood .ocnj-hero-bg {
+  position: absolute; inset: 0; overflow: hidden;
+}
+
+.single-neighborhood .ocnj-hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* fill hero without distortion */
+  object-position: center 35%;/* nudge focal point down a bit (adjust to taste) */
+  transform: none !important; /* guard against accidental scale */
+}
+
+@media (max-width: 768px) {
+  .single-neighborhood .ocnj-hero { min-height: 60vh; }
+}
+
+/* Safety: if someone leaves an empty stats list in markup, hide it */
+.single-neighborhood .ocnj-stats:empty { display: none !important; }
+
+/* ===== RECOVERY: neighborhoods archive grid/card + stats (do not remove) ===== */
+.post-type-archive-neighborhood #ocnj-profiles .ocnj-card-grid{
+  display:grid !important;
+  gap:32px !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+}
+.post-type-archive-neighborhood .ocnj-card{
+  background:#fff !important;
+  border-radius:18px !important;
+  box-shadow:0 6px 24px rgba(0,0,0,.06) !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+}
+.post-type-archive-neighborhood .ocnj-card__media img{
+  display:block !important;
+  width:100% !important;
+  height:240px !important;
+  object-fit:cover !important;
+}
+@media (max-width: 768px){
+  .post-type-archive-neighborhood .ocnj-card__media img{ height:200px !important; }
+}
+.post-type-archive-neighborhood .ocnj-card__body{ padding:20px 22px !important; }
+.post-type-archive-neighborhood .ocnj-card__title{ margin:0 0 8px !important; line-height:1.25 !important; }
+.post-type-archive-neighborhood .ocnj-card__meta{ color:#667085 !important; font-size:.95rem !important; }
+
+.post-type-archive-neighborhood .ocnj-stats{
+  list-style:none !important;
+  margin:0 !important;
+  padding:0 !important;
+}
+.post-type-archive-neighborhood .ocnj-stats li{
+  list-style:none !important;
+}
+/* ===== END RECOVERY ===== */
+
+/* OCNJ ARCHIVE RECOVERY (stats bullets) – 2025-08-24-200051 */
+body.post-type-archive-neighborhood .ocnj-stats,
+body.postid-175056 .ocnj-stats,
+body.page-id-169371 .ocnj-stats {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+body.post-type-archive-neighborhood .ocnj-stats li,
+body.postid-175056 .ocnj-stats li,
+body.page-id-169371 .ocnj-stats li { 
+  list-style: none !important; 
+}
+/* Retain elegant centered separators ONLY if markup requires it */
+body.post-type-archive-neighborhood .ocnj-stats li + li::before,
+body.postid-175056 .ocnj-stats li + li::before,
+body.page-id-169371 .ocnj-stats li + li::before {
+  content: "•";
+  margin: 0 18px;
+  opacity: .6;
+}

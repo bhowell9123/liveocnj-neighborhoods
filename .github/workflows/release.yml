@@ -1,0 +1,13 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tools/build-zip.sh
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: liveocnj-neighborhoods.zip

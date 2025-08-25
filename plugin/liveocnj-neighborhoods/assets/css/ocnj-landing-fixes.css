@@ -1,0 +1,73 @@
+/* OCNJ Neighborhoods Landing Page Fixes */
+
+/* Landing */
+.ocnj-landing .site-content,
+.ocnj-landing #content,
+.ocnj-landing .content-area,
+.ocnj-landing .entry-content { 
+  padding-top: 0; 
+  margin-top: 0; 
+  background: transparent; 
+}
+
+.ocnj-landing #masthead,
+.ocnj-landing .site-header { 
+  border-bottom: 0; 
+  box-shadow: none; 
+  background-clip: padding-box; /* seam insurance */
+}
+
+.ocnj-landing .ocnj-hero { 
+  margin-top: -1px; 
+}
+
+.ocnj-landing .ocnj-hero .ocnj-hero__inner { 
+  padding-top: clamp(12px, 2vw, 18px); 
+  padding-top: calc(clamp(12px, 2vw, 18px) + env(safe-area-inset-top)); /* iOS notch support */
+}
+
+.ocnj-landing .ocnj-hero .ocnj-hero-bg,
+.ocnj-landing .ocnj-hero .ocnj-hero-shade { 
+  top: 0; 
+}
+
+/* Archive */
+.ocnj-landing-archive .site-content,
+.ocnj-landing-archive #content,
+.ocnj-landing-archive .content-area,
+.ocnj-landing-archive .entry-content { 
+  padding-top: 0; 
+  margin-top: 0; 
+  background: transparent; 
+}
+
+.ocnj-landing-archive #masthead,
+.ocnj-landing-archive .site-header { 
+  border-bottom: 0; 
+  box-shadow: none; 
+  background-clip: padding-box; /* seam insurance */
+}
+
+.ocnj-landing-archive .ocnj-hero { 
+  margin-top: -1px; 
+}
+
+.ocnj-landing-archive .ocnj-hero .ocnj-hero__inner { 
+  padding-top: clamp(12px, 2vw, 18px); 
+  padding-top: calc(clamp(12px, 2vw, 18px) + env(safe-area-inset-top)); /* iOS notch support */
+}
+
+.ocnj-landing-archive .ocnj-hero .ocnj-hero-bg,
+.ocnj-landing-archive .ocnj-hero .ocnj-hero-shade { 
+  top: 0; 
+}
+
+/* Anchor/toolbar polish - consistent offset for in-page jumps */
+.ocnj-landing .ocnj-hero,
+.ocnj-landing #ocnj-profiles,
+.ocnj-landing #ocnj-faq,
+.ocnj-landing-archive .ocnj-hero,
+.ocnj-landing-archive #ocnj-profiles,
+.ocnj-landing-archive #ocnj-faq { 
+  scroll-margin-top: 96px; /* tune to header height */
+}

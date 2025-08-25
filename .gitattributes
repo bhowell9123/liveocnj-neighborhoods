@@ -1,0 +1,6 @@
+/archive export-ignore
+/docs export-ignore
+/tools export-ignore
+/.github export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
