@@ -1,0 +1,99 @@
+/**
+ * ULTRA-AGGRESSIVE STATS DOTS REMOVAL
+ * This CSS file targets all possible pseudo-elements that might be creating dots
+ * in the stats bar of the OCNJ Neighborhoods plugin.
+ */
+
+/* Target all possible selectors with maximum specificity */
+html body .ocnj-stats li,
+html body.post-type-archive-neighborhood .ocnj-stats li,
+html body.postid-175056 .ocnj-stats li,
+html body.page-id-169371 .ocnj-stats li,
+html body .ocnj-stats li + li,
+html body.post-type-archive-neighborhood .ocnj-stats li + li,
+html body.postid-175056 .ocnj-stats li + li,
+html body.page-id-169371 .ocnj-stats li + li,
+html body .ocnj-stats > li,
+html body.post-type-archive-neighborhood .ocnj-stats > li,
+html body.postid-175056 .ocnj-stats > li,
+html body.page-id-169371 .ocnj-stats > li {
+  list-style: none !important;
+  list-style-type: none !important;
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+  position: relative !important;
+}
+
+/* Target all possible pseudo-elements with maximum specificity */
+html body .ocnj-stats li::before,
+html body .ocnj-stats li::after,
+html body .ocnj-stats li + li::before,
+html body .ocnj-stats li + li::after,
+html body.post-type-archive-neighborhood .ocnj-stats li::before,
+html body.post-type-archive-neighborhood .ocnj-stats li::after,
+html body.post-type-archive-neighborhood .ocnj-stats li + li::before,
+html body.post-type-archive-neighborhood .ocnj-stats li + li::after,
+html body.postid-175056 .ocnj-stats li::before,
+html body.postid-175056 .ocnj-stats li::after,
+html body.postid-175056 .ocnj-stats li + li::before,
+html body.postid-175056 .ocnj-stats li + li::after,
+html body.page-id-169371 .ocnj-stats li::before,
+html body.page-id-169371 .ocnj-stats li::after,
+html body.page-id-169371 .ocnj-stats li + li::before,
+html body.page-id-169371 .ocnj-stats li + li::after,
+html body .ocnj-stats > li::before,
+html body .ocnj-stats > li::after,
+html body.post-type-archive-neighborhood .ocnj-stats > li::before,
+html body.post-type-archive-neighborhood .ocnj-stats > li::after,
+html body.postid-175056 .ocnj-stats > li::before,
+html body.postid-175056 .ocnj-stats > li::after,
+html body.page-id-169371 .ocnj-stats > li::before,
+html body.page-id-169371 .ocnj-stats > li::after {
+  display: none !important;
+  content: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+}
+
+/* Target Astra theme specific selectors */
+html body.ast-desktop .ocnj-stats li::before,
+html body.ast-desktop .ocnj-stats li::after,
+html body.ast-desktop .ocnj-stats li + li::before,
+html body.ast-desktop .ocnj-stats li + li::after,
+html body.wp-theme-astra .ocnj-stats li::before,
+html body.wp-theme-astra .ocnj-stats li::after,
+html body.wp-theme-astra .ocnj-stats li + li::before,
+html body.wp-theme-astra .ocnj-stats li + li::after,
+html body.astra-4\.6\.14 .ocnj-stats li::before,
+html body.astra-4\.6\.14 .ocnj-stats li::after,
+html body.astra-4\.6\.14 .ocnj-stats li + li::before,
+html body.astra-4\.6\.14 .ocnj-stats li + li::after {
+  display: none !important;
+  content: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Target Elementor specific selectors */
+html body.elementor-default .ocnj-stats li::before,
+html body.elementor-default .ocnj-stats li::after,
+html body.elementor-default .ocnj-stats li + li::before,
+html body.elementor-default .ocnj-stats li + li::after,
+html body.elementor-kit-167841 .ocnj-stats li::before,
+html body.elementor-kit-167841 .ocnj-stats li::after,
+html body.elementor-kit-167841 .ocnj-stats li + li::before,
+html body.elementor-kit-167841 .ocnj-stats li + li::after {
+  display: none !important;
+  content: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

@@ -108,4 +108,115 @@ The plugin provides several WP-CLI commands for maintenance:
 - `wp ocnj flush-rewrite` - Flush rewrite rules
 - `wp ocnj force-flush` - Force flush rewrite rules (deletes rules first)
 - `wp ocnj test-urls` - Test neighborhood URLs
-- `wp ocnj debug-rewrite` - Debug rewrite rules
+- `wp ocnj debug-rewrite` - Debug rewrite rules-e 
+
+## Stats Bar Dots Fix
+
+
+# Stats Bar Dots Fix Documentation
+
+## Issue Overview
+
+The OCNJ Neighborhoods plugin's stats bar was displaying unwanted dots between list items. These dots were being added by CSS pseudo-elements (::before or ::after) targeting the list items, likely from the WordPress theme (Astra) or other plugins.
+
+## Solution Implemented
+
+We applied a "nuclear option" fix by completely replacing the list-based HTML structure (UL/LI) with DIV elements. This eliminated the dots by removing the elements that the pseudo-selectors were targeting while preserving the visual layout.
+
+### Technical Implementation Details
+
+1. The original HTML structure used a UL/LI pattern:
+   ```html
+   <ul class="ocnj-stats">
+     <li>...</li>
+     <li>...</li>
+     <!-- etc. -->
+   </ul>
+   ```
+
+2. We replaced it with a DIV-based structure:
+   ```html
+   <div class="stats-container">
+     <div class="stats-item">...</div>
+     <div class="stats-item">...</div>
+     <!-- etc. -->
+   </div>
+   ```
+
+3. All styling was preserved using equivalent CSS properties on the DIVs.
+
+### Class Name Changes
+
+- `ocnj-stats` (UL) → `stats-container` (DIV)
+- List items (LI) → `stats-item` (DIV)
+
+## Why This Approach Worked
+
+1. **CSS Specificity Wars**: The theme/plugin CSS had higher specificity that couldn't be easily overridden.
+2. **Pseudo-element Limitations**: ::before/::after pseudo-elements can't be fully overridden by external CSS.
+3. **Caching Issues**: Multiple layers of caching prevented CSS-only changes from taking effect.
+4. **Theme Interference**: The WordPress theme was likely adding its own list styling.
+
+By changing the HTML structure itself, we eliminated the elements that were being targeted by the problematic CSS rules.
+
+## Future Maintenance Guidelines
+
+### When Editing the Stats Section
+
+1. **Remember the DIV Structure**: The stats section now uses DIVs instead of UL/LI elements.
+2. **Use the New Class Names**: 
+   - `stats-container` (formerly `ocnj-stats`)
+   - `stats-item` (formerly list items)
+3. **Preserve the Flexbox Layout**: The layout is maintained using flexbox properties.
+4. **Avoid Reverting to Lists**: Do not change back to UL/LI structure as this will reintroduce the dots issue.
+
+### If Similar Issues Occur Elsewhere
+
+1. **Identify the HTML Structure**: Determine if list elements (UL/LI) are being used.
+2. **Check for Pseudo-elements**: Use browser developer tools to inspect for ::before or ::after pseudo-elements.
+3. **Consider Structure Change**: Instead of fighting CSS specificity battles, consider changing the HTML structure.
+4. **Document Changes**: Always document structural changes for future reference.
+
+## Key Lesson
+
+Sometimes the best solution is to change the HTML structure rather than fight CSS specificity battles. This approach is:
+- More reliable than CSS overrides
+- Future-proof against theme changes
+- Cleaner than complex CSS workarounds
+- Easier to maintain with clear class names
+
+## Script Used for the Fix
+
+For reference, here's the Python script used to implement the fix:
+
+```python
+import re
+
+# Read the template file
+with open('plugin/liveocnj-neighborhoods/templates/archive-neighborhood.php', 'r') as f:
+    content = f.read()
+
+# Find the stats section
+stats_pattern = r'<ul class="ocnj-stats"[^>]*>(.*?)</ul>'
+
+# Extract the stats section content
+stats_match = re.search(stats_pattern, content, re.DOTALL)
+if stats_match:
+    stats_content = stats_match.group(1)
+    
+    # Replace each <li> with a <div>
+    stats_content = re.sub(r'<li[^>]*>', '<div class="stats-item" style="flex: 1; min-width: 120px; text-align: center !important; visibility: visible !important; opacity: 1 !important;">', stats_content)
+    stats_content = re.sub(r'</li>', '</div>', stats_content)
+    
+    # Create the new DIV-based stats section
+    new_stats = f'''<div class="stats-container" style="list-style: none !important; padding: 2rem !important; margin: 3rem auto 0 !important; display: flex !important; flex-wrap: wrap !important; gap: 1rem !important; align-items: center !important; max-width: 960px !important; background: rgba(255,255,255,.95) !important; backdrop-filter: blur(10px) !important; border-radius: 16px !important; box-shadow: 0 8px 32px rgba(0,0,0,.1) !important; visibility: visible !important; opacity: 1 !important;">
+{stats_content}
+</div>'''
+    
+    # Replace the UL with the new DIV structure
+    content = re.sub(stats_pattern, new_stats, content, flags=re.DOTALL)
+    
+    # Write back
+    with open('plugin/liveocnj-neighborhoods/templates/archive-neighborhood.php', 'w') as f:
+        f.write(content)
+```

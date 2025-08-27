@@ -128,36 +128,74 @@ body.post-type-archive-neighborhood .ocnj-hero{ scroll-margin-top: 96px; }
   color:rgba(255,255,255,.95) !important;text-shadow:1px 1px 2px rgba(0,0,0,.7) !important;
 }
 
-/* Stats */
-.ocnj-stats{
-  background:rgba(255,255,255,.95) !important;backdrop-filter:blur(10px) !important;border-radius:16px !important;
-  padding:2.5rem 2rem !important;margin-top:3rem !important;display:grid !important;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr)) !important;gap:1.5rem !important;
-  color:#333 !important;box-shadow:0 8px 32px rgba(0,0,0,.1) !important;
-}
-.ocnj-stat{text-align:center !important;}
-.ocnj-stat-value{font-size:1.75rem !important;font-weight:700 !important;color:#2563eb !important;margin-bottom:.25rem !important;display:block !important;white-space:nowrap !important;}
-.ocnj-stat-label{font-size:.875rem !important;color:#666 !important;font-weight:500 !important;}
 
-/* Stats flex layout for dot separators */
+
+
+
+/* Stats Bar - Optimized Layout */
 .ocnj-stats {
+  list-style: none !important;
+  padding: 2rem !important;
+  margin: 3rem auto 0 !important;
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 1rem !important;
   align-items: center !important;
+  justify-content: center !important;
+  max-width: 960px !important;
+  background: rgba(255,255,255,.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.1) !important;
+  color: #333 !important;
 }
 
 .ocnj-stats li {
   list-style: none !important;
   padding-left: 0 !important;
   margin-left: 0 !important;
+  text-align: center !important;
+  flex: 1 1 auto !important;
+  min-width: 120px !important;
 }
 
-.ocnj-stats li + li::before {
-  content: "•";
-  margin: 0 18px;
-  opacity: .6;
+.ocnj-stat-value,
+.ocnj-stat__value {
+  display: block !important;
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #2563eb !important;
+  margin-bottom: .25rem !important;
+  white-space: nowrap !important;
 }
+
+.ocnj-stat-label,
+.ocnj-stat__label {
+  display: block !important;
+  font-size: .95rem !important;
+  color: #666 !important;
+  font-weight: 500 !important;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 768px) {
+  .ocnj-stats {
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+    padding: 1.5rem !important;
+  }
+  
+  .ocnj-stats li {
+    min-width: auto !important;
+    width: 100% !important;
+  }
+}
+
+/* Remove dot separators that conflict with flex layout */
+.ocnj-stats li + li::before {
+  display: none !important;
+}
+
 
 /* Sections */
 .ocnj-section{ padding:5rem 2rem !important; max-width:1200px !important; margin:0 auto !important; }
@@ -259,7 +297,7 @@ body.post-type-archive-neighborhood .ocnj-hero{ scroll-margin-top: 96px; }
   .ocnj-hero h1{ font-size:2.5rem !important; }
   .ocnj-neighborhoods-grid{ grid-template-columns:1fr !important; gap:1.5rem !important; }
   .ocnj-section{ padding:3rem 1rem !important; }
-  .ocnj-stats{ grid-template-columns:repeat(2,1fr) !important; }
+  .ocnj-stats{ flex-direction: column !important; }
   .ocnj-expert-card{ padding:3rem 2rem !important; }
 }
 
@@ -395,7 +433,7 @@ body.post-type-archive-neighborhood .ocnj-hero{ scroll-margin-top: 96px; }
 
 /* Responsive: turn into 2x2 on small screens */
 @media (max-width: 768px){
-  .ocnj-stats{ grid-template-columns:repeat(2,1fr) !important; gap:1.25rem !important; }
+  .ocnj-stats{ flex-direction: column !important; gap:1.25rem !important; }
   .ocnj-stats li:not(:last-child)::after{ display:none; }
 }
 
@@ -572,14 +610,6 @@ body.post-type-archive-neighborhood .ocnj-stats li,
 body.postid-175056 .ocnj-stats li,
 body.page-id-169371 .ocnj-stats li { 
   list-style: none !important; 
-}
-/* Retain elegant centered separators ONLY if markup requires it */
-body.post-type-archive-neighborhood .ocnj-stats li + li::before,
-body.postid-175056 .ocnj-stats li + li::before,
-body.page-id-169371 .ocnj-stats li + li::before {
-  content: "•";
-  margin: 0 18px;
-  opacity: .6;
 }
 
 /* FAQ Accordion Styles - Simplified */
