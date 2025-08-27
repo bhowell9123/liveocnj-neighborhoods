@@ -1,0 +1,203 @@
+{
+  "key": "group_neighborhood_locnj",
+  "title": "Neighborhood Information",
+  "fields": [
+    {
+      "key": "field_neighborhood_heading",
+      "label": "Heading (H1)",
+      "name": "neighborhood_heading",
+      "type": "text",
+      "instructions": "Main heading for the neighborhood page",
+      "required": 0
+    },
+    {
+      "key": "field_neighborhood_about",
+      "label": "About",
+      "name": "neighborhood_about",
+      "type": "textarea",
+      "instructions": "Short description for cards and excerpts",
+      "required": 0
+    },
+    {
+      "key": "field_neighborhood_meta_description",
+      "label": "Meta Description",
+      "name": "neighborhood_meta_description",
+      "type": "textarea",
+      "instructions": "SEO description (Yoast will use this as a fallback)",
+      "required": 0
+    },
+    {
+      "key": "field_neighborhood_facts",
+      "label": "Facts",
+      "name": "neighborhood_facts",
+      "type": "repeater",
+      "layout": "table",
+      "button_label": "Add Fact",
+      "sub_fields": [
+        {
+          "key": "field_neighborhood_fact_text",
+          "label": "Fact",
+          "name": "text",
+          "type": "text",
+          "required": 0
+        }
+      ]
+    },
+    {
+      "key": "field_neighborhood_faq",
+      "label": "FAQ",
+      "name": "neighborhood_faq",
+      "type": "repeater",
+      "layout": "row",
+      "button_label": "Add FAQ",
+      "collapsed": "field_neighborhood_faq_question",
+      "sub_fields": [
+        {
+          "key": "field_neighborhood_faq_question",
+          "label": "Question",
+          "name": "question",
+          "type": "text"
+        },
+        {
+          "key": "field_neighborhood_faq_answer",
+          "label": "Answer",
+          "name": "answer",
+          "type": "wysiwyg",
+          "tabs": "all",
+          "toolbar": "full",
+          "media_upload": 1
+        }
+      ]
+    },
+    {
+      "key": "field_neighborhood_market_data",
+      "label": "Market Data",
+      "name": "neighborhood_market_data",
+      "type": "group",
+      "layout": "row",
+      "sub_fields": [
+        {
+          "key": "field_neighborhood_median_price",
+          "label": "Median Price",
+          "name": "median_price",
+          "type": "number"
+        },
+        {
+          "key": "field_neighborhood_dom_median",
+          "label": "Days on Market (Median)",
+          "name": "dom_median",
+          "type": "number"
+        },
+        {
+          "key": "field_neighborhood_active_inventory",
+          "label": "Active Inventory",
+          "name": "active_inventory",
+          "type": "number"
+        },
+        {
+          "key": "field_neighborhood_price_badge",
+          "label": "Price Badge",
+          "name": "price_badge",
+          "type": "text",
+          "instructions": "Short price text for cards, e.g., \"$1.2M+\""
+        }
+      ]
+    },
+    {
+      "key": "field_neighborhood_hero_image",
+      "label": "Hero Image",
+      "name": "neighborhood_hero_image",
+      "type": "image",
+      "return_format": "array",
+      "preview_size": "medium",
+      "library": "all"
+    },
+    {
+      "key": "field_neighborhood_idx_links",
+      "label": "IDX Links",
+      "name": "neighborhood_idx_links",
+      "type": "group",
+      "layout": "row",
+      "sub_fields": [
+        {
+          "key": "field_neighborhood_idx_default",
+          "label": "Default Link",
+          "name": "default",
+          "type": "url"
+        },
+        {
+          "key": "field_neighborhood_idx_for_sale",
+          "label": "For Sale",
+          "name": "for_sale",
+          "type": "group",
+          "layout": "table",
+          "sub_fields": [
+            {
+              "key": "field_neighborhood_idx_for_sale_condos",
+              "label": "Condos",
+              "name": "condos",
+              "type": "url"
+            },
+            {
+              "key": "field_neighborhood_idx_for_sale_sf",
+              "label": "Single Family",
+              "name": "sf",
+              "type": "url"
+            }
+          ]
+        },
+        {
+          "key": "field_neighborhood_idx_sold",
+          "label": "Sold",
+          "name": "sold",
+          "type": "group",
+          "layout": "table",
+          "sub_fields": [
+            {
+              "key": "field_neighborhood_idx_sold_condos",
+              "label": "Condos",
+              "name": "condos",
+              "type": "url"
+            },
+            {
+              "key": "field_neighborhood_idx_sold_sf",
+              "label": "Single Family",
+              "name": "sf",
+              "type": "url"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "field_neighborhood_related",
+      "label": "Related Neighborhoods",
+      "name": "neighborhood_related",
+      "type": "relationship",
+      "post_type": ["neighborhood"],
+      "filters": ["search"],
+      "elements": ["featured_image"],
+      "min": 0,
+      "max": 5,
+      "return_format": "object"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "neighborhood"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "",
+  "show_in_rest": 0
+}

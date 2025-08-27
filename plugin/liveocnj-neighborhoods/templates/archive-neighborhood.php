@@ -8,57 +8,137 @@
 defined('ABSPATH') || exit;
 get_header();
 require_once __DIR__ . '/partials/image-helpers.php';
+
+// Fetch the archive meta options
+$meta = get_option('locnj_archive_meta', []);
+
+// Debug output (only visible to admins)
+if (current_user_can('manage_options')) {
+    echo '<!-- DEBUG: Archive meta data: ' . esc_html(json_encode($meta)) . ' -->';
+    echo '<!-- DEBUG: Body classes: ' . esc_html(implode(' ', get_body_class())) . ' -->';
+    
+    // Debug CSS files
+    global $wp_styles;
+    echo '<!-- DEBUG: Enqueued styles: ';
+    foreach ($wp_styles->queue as $handle) {
+        echo esc_html($handle) . ', ';
+    }
+    echo ' -->';
+    
+    // Debug template file being used
+    echo '<!-- DEBUG: Template file: ' . __FILE__ . ' -->';
+}
+
+// Extract values with fallbacks
+$hero_title = $meta['hero_title'] ?? 'Ocean City, NJ Real Estate: A Complete Neighborhood & FAQ Guide';
+$hero_sub = $meta['hero_sub'] ?? $meta['hero_subtitle'] ?? 'Discover your perfect Ocean City neighborhood';
+$stats = $meta['stats'] ?? null;
+$hero_img = $meta['hero_image'] ?? '';
+$map_img = $meta['map_image'] ?? '';
+
+// More debug info for admins
+if (current_user_can('manage_options')) {
+    echo '<!-- DEBUG: Using hero_title: ' . esc_html($hero_title) . ' -->';
+    echo '<!-- DEBUG: Using hero_sub: ' . esc_html($hero_sub) . ' -->';
+    echo '<!-- DEBUG: Using hero_img: ' . esc_html($hero_img) . ' -->';
+    echo '<!-- DEBUG: Using map_img: ' . esc_html($map_img) . ' -->';
+    echo '<!-- DEBUG: Stats data: ' . esc_html(json_encode($stats)) . ' -->';
+    
+    // Debug CSS files
+    global $wp_styles;
+    echo '<!-- DEBUG: Enqueued styles: ';
+    foreach ($wp_styles->queue as $handle) {
+        echo esc_html($handle) . ', ';
+    }
+    echo ' -->';
+}
 ?>
 <main id="primary" class="ocnj-archive">
+
+  <?php if (current_user_can('manage_options')): ?>
+  <div style="background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 10px; margin: 10px 0;">
+    <p><strong>Debug Info (Admin Only):</strong></p>
+    <p>Template: archive-neighborhood.php</p>
+    <p>Body Classes: <?php echo esc_html(implode(' ', get_body_class())); ?></p>
+    <p>Hero URL: <?php echo !empty($hero_img) ? esc_html($hero_img) : 'Not set'; ?></p>
+    <p>Map URL: <?php echo !empty($map_img) ? esc_html($map_img) : 'Not set'; ?></p>
+    <p>Stats: <?php echo is_array($stats) ? esc_html(json_encode($stats)) : 'Not set'; ?></p>
+    <p>Template Path: <?php echo esc_html(__FILE__); ?></p>
+    <p>Hero Section Visibility: <span style="color: green; font-weight: bold;">Forced Visible with !important</span></p>
+    <p>Stats Visibility: <span style="color: green; font-weight: bold;">Forced Visible with !important</span></p>
+    <p>Map Visibility: <span style="color: green; font-weight: bold;">Forced Visible with !important</span></p>
+  </div>
+  <?php endif; ?>
 
   <!-- HERO -->
   <?php
   // Get the hero image URL using a more dynamic approach
-  $hero_image_id = get_option('locnj_neighborhoods_archive_hero_id');
-  if ($hero_image_id) {
-    $hero_url = wp_get_attachment_image_url($hero_image_id, 'full');
+  if (!empty($hero_img)) {
+    $hero_url = $hero_img;
   } else {
-    // Fallback to the plugin's default image
-    $hero_url = plugin_dir_url(LOCNJ_NEIGHBORHOODS_FILE) . 'assets/img/ocean-city-nj-bay-aerial-neighborhoods-hero.png';
+    $hero_image_id = get_option('locnj_neighborhoods_archive_hero_id');
+    if ($hero_image_id) {
+      $hero_url = wp_get_attachment_image_url($hero_image_id, 'full');
+    } else {
+      // Fallback to the plugin's default image
+      $hero_url = plugin_dir_url(LOCNJ_NEIGHBORHOODS_FILE) . 'assets/img/ocean-city-nj-bay-aerial-neighborhoods-hero.png';
+    }
+  }
+  
+  // Ensure hero_url is absolute
+  if (!empty($hero_url) && strpos($hero_url, 'http') !== 0) {
+    $hero_url = site_url($hero_url);
   }
   ?>
-  <section class="ocnj-hero ocnj-hero--spaced">
-    <div class="ocnj-hero-bg" aria-hidden="true">
-      <img src="<?php echo esc_url($hero_url); ?>" alt="" loading="eager" decoding="async">
+  <section class="ocnj-hero ocnj-hero--spaced" style="position: relative !important; min-height: 80vh !important; overflow: hidden !important; display: flex !important; align-items: center !important; justify-content: center !important; text-align: center !important; color: #fff !important; margin: 0 0 4rem 0 !important; z-index: 1 !important; visibility: visible !important; opacity: 1 !important;">
+    <div class="ocnj-hero-bg" aria-hidden="true" style="position: absolute !important; inset: 0 !important; z-index: 0 !important; overflow: hidden !important; visibility: visible !important; opacity: 1 !important;">
+      <img src="<?php echo esc_url($hero_url); ?>" alt="" loading="eager" decoding="async" style="display: block !important; width: 100% !important; height: 100% !important; object-fit: cover !important; visibility: visible !important; opacity: 1 !important;">
     </div>
-    <div class="ocnj-hero-shade" aria-hidden="true"></div>
-    <div class="ocnj-hero__inner">
-      <h1>Ocean City, NJ Real Estate: A Complete Neighborhood &amp; FAQ Guide</h1>
-      <p class="ocnj-hero__sub">Discover your perfect Ocean City neighborhood</p>
-      <div class="ocnj-hero__cta">
-        <a class="ocnj-btn ocnj-btn--primary" href="#ocnj-profiles">Explore Neighborhoods</a>
-        <a class="ocnj-btn ocnj-btn--ghost" href="#ocnj-faq">Read the FAQ</a>
+    <div class="ocnj-hero-shade" aria-hidden="true" style="position: absolute !important; inset: 0 !important; z-index: 1 !important; background: linear-gradient(rgba(0,0,0,.45), rgba(0,0,0,.45)) !important; visibility: visible !important; opacity: 1 !important;"></div>
+    <div class="ocnj-hero__inner" style="position: relative !important; z-index: 2 !important; max-width: 800px !important; padding: 3rem 2rem !important; visibility: visible !important; opacity: 1 !important;">
+      <h1 style="font-size: clamp(2.5rem,5vw,3.5rem) !important; font-weight: 700 !important; margin-bottom: .5rem !important; text-shadow: 2px 2px 4px rgba(0,0,0,.7) !important; line-height: 1.1 !important; color: #fff !important; visibility: visible !important; opacity: 1 !important; display: block !important;"><?php echo esc_html($hero_title); ?></h1>
+      <p class="ocnj-hero__sub" style="font-size: clamp(1rem,2vw,1.25rem) !important; margin-bottom: 2.5rem !important; color: rgba(255,255,255,.95) !important; text-shadow: 1px 1px 2px rgba(0,0,0,.7) !important; visibility: visible !important; opacity: 1 !important; display: block !important;"><?php echo esc_html($hero_sub); ?></p>
+      <div class="ocnj-hero__cta" style="visibility: visible !important; opacity: 1 !important; display: block !important;">
+        <a class="ocnj-btn ocnj-btn--primary" href="#ocnj-profiles" style="display: inline-block !important; padding: 14px 28px !important; background: #2563eb !important; color: #fff !important; text-decoration: none !important; border-radius: 8px !important; font-weight: 600 !important; margin: 0 10px 1rem 0 !important; border: 2px solid #2563eb !important; visibility: visible !important; opacity: 1 !important;">Explore Neighborhoods</a>
+        <a class="ocnj-btn ocnj-btn--ghost" href="#ocnj-faq" style="display: inline-block !important; padding: 14px 28px !important; background: transparent !important; color: #fff !important; text-decoration: none !important; border-radius: 8px !important; font-weight: 600 !important; margin: 0 10px 1rem 0 !important; border: 2px solid #fff !important; visibility: visible !important; opacity: 1 !important;">Read the FAQ</a>
       </div>
-      <ul class="ocnj-stats">
-        <li><span class="ocnj-stat-value">$1,045,659</span><span class="ocnj-stat-label">Median Price</span></li>
-        <li><span class="ocnj-stat-value">-0.2%</span><span class="ocnj-stat-label">1-Year Change</span></li>
-        <li><span class="ocnj-stat-value">35</span><span class="ocnj-stat-label">Days on Market</span></li>
-        <li><span class="ocnj-stat-value">187</span><span class="ocnj-stat-label">Homes for Sale</span></li>
+      <ul class="ocnj-stats" style="list-style: none !important; padding: 2rem !important; margin: 3rem auto 0 !important; display: flex !important; flex-wrap: wrap !important; gap: 1rem !important; align-items: center !important; max-width: 960px !important; background: rgba(255,255,255,.95) !important; backdrop-filter: blur(10px) !important; border-radius: 16px !important; box-shadow: 0 8px 32px rgba(0,0,0,.1) !important; visibility: visible !important; opacity: 1 !important;">
+        <li style="list-style: none !important; padding-left: 0 !important; margin-left: 0 !important; text-align: center !important; visibility: visible !important; opacity: 1 !important;"><span class="ocnj-stat-value" style="display: block !important; font-size: 1.75rem !important; font-weight: 700 !important; color: #2563eb !important; margin-bottom: .25rem !important; white-space: nowrap !important; visibility: visible !important; opacity: 1 !important;"><?php echo esc_html(is_array($stats) && isset($stats['median_price']) ? $stats['median_price'] : '$1,045,659'); ?></span><span class="ocnj-stat-label" style="display: block !important; font-size: .95rem !important; color: #666 !important; font-weight: 500 !important; visibility: visible !important; opacity: 1 !important;">Median Price</span></li>
+        <li style="list-style: none !important; padding-left: 0 !important; margin-left: 0 !important; text-align: center !important; visibility: visible !important; opacity: 1 !important;"><span class="ocnj-stat-value" style="display: block !important; font-size: 1.75rem !important; font-weight: 700 !important; color: #2563eb !important; margin-bottom: .25rem !important; white-space: nowrap !important; visibility: visible !important; opacity: 1 !important;"><?php echo esc_html(is_array($stats) && isset($stats['yoy_change']) ? $stats['yoy_change'] : '-0.2%'); ?></span><span class="ocnj-stat-label" style="display: block !important; font-size: .95rem !important; color: #666 !important; font-weight: 500 !important; visibility: visible !important; opacity: 1 !important;">1-Year Change</span></li>
+        <li style="list-style: none !important; padding-left: 0 !important; margin-left: 0 !important; text-align: center !important; visibility: visible !important; opacity: 1 !important;"><span class="ocnj-stat-value" style="display: block !important; font-size: 1.75rem !important; font-weight: 700 !important; color: #2563eb !important; margin-bottom: .25rem !important; white-space: nowrap !important; visibility: visible !important; opacity: 1 !important;"><?php echo esc_html(is_array($stats) && isset($stats['dom']) ? $stats['dom'] : '35'); ?></span><span class="ocnj-stat-label" style="display: block !important; font-size: .95rem !important; color: #666 !important; font-weight: 500 !important; visibility: visible !important; opacity: 1 !important;">Days on Market</span></li>
+        <li style="list-style: none !important; padding-left: 0 !important; margin-left: 0 !important; text-align: center !important; visibility: visible !important; opacity: 1 !important;"><span class="ocnj-stat-value" style="display: block !important; font-size: 1.75rem !important; font-weight: 700 !important; color: #2563eb !important; margin-bottom: .25rem !important; white-space: nowrap !important; visibility: visible !important; opacity: 1 !important;"><?php echo esc_html(is_array($stats) && isset($stats['active']) ? $stats['active'] : '187'); ?></span><span class="ocnj-stat-label" style="display: block !important; font-size: .95rem !important; color: #666 !important; font-weight: 500 !important; visibility: visible !important; opacity: 1 !important;">Homes for Sale</span></li>
       </ul>
     </div>
   </section>
 
   <!-- MAP INTRO -->
-  <section class="ocnj-map-intro" aria-labelledby="ocnj-map-title">
-    <div class="ocnj-section__inner">
-      <h2 id="ocnj-map-title">Map of all Areas in Ocean City NJ</h2>
-      <p>Explore Ocean City's 11 distinct neighborhoods. Click on any area to learn more about its unique character, market data, and lifestyle offerings.</p>
-      <div class="ocnj-map-container">
-        <img src="<?php echo esc_url(plugin_dir_url(LOCNJ_NEIGHBORHOODS_FILE) . 'assets/img/Ocean_City_NJ_Map.jpg'); ?>" alt="Map of Ocean City neighborhoods" class="ocnj-map-image" width="1600" height="900" loading="lazy" decoding="async">
+  <section class="ocnj-map-intro" aria-labelledby="ocnj-map-title" style="margin: 4rem 0 !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+    <div class="ocnj-section__inner" style="max-width: 1200px !important; margin: 0 auto !important; padding: 0 2rem !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+      <h2 id="ocnj-map-title" style="font-size: clamp(2rem,4vw,2.75rem) !important; font-weight: 700 !important; text-align: center !important; margin-bottom: 1.5rem !important; color: #1f2937 !important; display: block !important; visibility: visible !important; opacity: 1 !important;">Map of all Areas in Ocean City NJ</h2>
+      <p style="font-size: 1.125rem !important; text-align: center !important; color: #6b7280 !important; max-width: 700px !important; margin: 0 auto 2rem !important; display: block !important; visibility: visible !important; opacity: 1 !important;">Explore Ocean City's 11 distinct neighborhoods. Click on any area to learn more about its unique character, market data, and lifestyle offerings.</p>
+      <div class="ocnj-map-container" style="max-width: 1200px !important; margin: 2rem auto !important; text-align: center !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+        <?php
+        // Ensure map_img is absolute
+        $map_url = !empty($map_img) ? $map_img : plugin_dir_url(LOCNJ_NEIGHBORHOODS_FILE) . 'assets/img/Ocean_City_NJ_Map.jpg';
+        if (!empty($map_url) && strpos($map_url, 'http') !== 0) {
+          $map_url = site_url($map_url);
+        }
+        ?>
+        <img src="<?php echo esc_url($map_url); ?>" alt="Map of Ocean City neighborhoods" class="ocnj-map-image" width="1600" height="900" loading="lazy" decoding="async" style="max-width: 100% !important; height: auto !important; border-radius: 12px !important; box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important;">
+        <?php if (current_user_can('manage_options')): ?>
+        <div style="margin-top: 10px; font-size: 12px; color: #666;">
+          Map image URL: <?php echo esc_html($map_url); ?>
+        </div>
+        <?php endif; ?>
       </div>
     </div>
   </section>
 
   <!-- PROFILES GRID -->
   <section id="ocnj-profiles" class="ocnj-profiles" aria-labelledby="ocnj-profiles-title">
-    <div class="ocnj-section__inner">
-      <h2 id="ocnj-profiles-title">Comprehensive Neighborhood Profiles</h2>
-      <p>Detailed insights into each of Ocean City's unique neighborhoods, including market data, lifestyle information, and expert recommendations.</p>
+    <div class="ocnj-section__inner" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+    <h2 id="ocnj-profiles-title" style="font-size: clamp(2rem,4vw,2.75rem); font-weight: 700; text-align: center; margin-bottom: 1.5rem; color: #1f2937;">Comprehensive Neighborhood Profiles</h2>
+    <p style="font-size: 1.125rem; text-align: center; color: #6b7280; max-width: 700px; margin: 0 auto 2rem;">Detailed insights into each of Ocean City's unique neighborhoods, including market data, lifestyle information, and expert recommendations.</p>
 
       <?php
       // 1) Query all neighborhoods (fast flags on)
@@ -87,14 +167,14 @@ require_once __DIR__ . '/partials/image-helpers.php';
           $seen_families[$family] = true;
 
           ob_start(); ?>
-          <article class="ocnj-card">
-            <a class="ocnj-card__media" href="<?php the_permalink(); ?>">
+          <article class="ocnj-card" style="background: #fff; border-radius: 20px; box-shadow: 0 8px 24px rgba(0,0,0,.08); overflow: hidden; display: flex; flex-direction: column;">
+            <a class="ocnj-card__media" href="<?php the_permalink(); ?>" style="display: block; text-decoration: none;">
 <?php
 $img_url = locnj_get_hero_url($id);
 ?>
   <img src="<?php echo esc_url($img_url); ?>"
        alt="<?php echo esc_attr(get_the_title($id)); ?>"
-       loading="lazy" decoding="async" />
+       loading="lazy" decoding="async" style="display: block; width: 100%; height: 220px; object-fit: cover;" />
 
               <?php
               // Price badge (ACF -> fallback)
@@ -124,16 +204,16 @@ $img_url = locnj_get_hero_url($id);
               // if ($price_badge === '') $price_badge = '$1.2M+';
 
               if ($price_badge !== '') : ?>
-                <div class="ocnj-price-badge"><?php echo esc_html($price_badge); ?></div>
+                <div class="ocnj-price-badge" style="position: absolute; top: 1rem; right: 1rem; background: #2563eb; color: #fff; padding: .5rem 1rem; border-radius: 8px; font-weight: 600; font-size: .875rem; box-shadow: 0 2px 8px rgba(37,99,235,.3);"><?php echo esc_html($price_badge); ?></div>
               <?php endif; ?>
             </a>
 
-            <div class="ocnj-card__body">
-              <h3 class="ocnj-card__title">
-                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+            <div class="ocnj-card__body" style="padding: 18px 20px;">
+              <h3 class="ocnj-card__title" style="font-size: 1.25rem; line-height: 1.25; margin: 0 0 8px;">
+                <a href="<?php the_permalink(); ?>" style="text-decoration: none; color: #1f2937;"><?php the_title(); ?></a>
               </h3>
 
-              <p class="ocnj-card__sub">
+              <p class="ocnj-card__sub" style="color: #4b5563; margin: 0 0 12px;">
                 <?php
                 $about   = function_exists('get_field') ? (string) get_field('neighborhood_about', $id) : '';
                 $snippet = $about ? wp_trim_words(wp_strip_all_tags($about), 26) : get_the_excerpt();
@@ -159,14 +239,14 @@ $img_url = locnj_get_hero_url($id);
                 }
               }
               if ($chips) : ?>
-                <ul class="ocnj-card-chips" aria-label="Highlights">
+                <ul class="ocnj-card-chips" style="display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 12px; padding: 0; list-style: none;" aria-label="Highlights">
                   <?php foreach (array_slice($chips, 0, 3) as $chip) : ?>
-                    <li><?php echo esc_html($chip); ?></li>
+                    <li style="background: #f1f5f9; border-radius: 999px; padding: 6px 10px; font-size: .875rem; color: #111827; list-style: none;"><?php echo esc_html($chip); ?></li>
                   <?php endforeach; ?>
                 </ul>
               <?php endif; ?>
 
-              <p class="ocnj-card__link"><a href="<?php the_permalink(); ?>">Read the guide →</a></p>
+              <p class="ocnj-card__link" style="margin-top: 12px;"><a href="<?php the_permalink(); ?>" style="color: #2563eb; text-decoration: none;">Read the guide →</a></p>
             </div>
           </article>
           <?php
@@ -177,7 +257,7 @@ $img_url = locnj_get_hero_url($id);
 
       // 3) Output grid once (no theme fallback loop, no duplicates)
       if ($cards_html) {
-        echo '<div class="ocnj-card-grid">', implode('', $cards_html), '</div>';
+        echo '<div class="ocnj-card-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px; margin-top: 24px;">', implode('', $cards_html), '</div>';
       }
       ?>
     </div>
@@ -185,9 +265,9 @@ $img_url = locnj_get_hero_url($id);
 
   <!-- GLOBAL FAQ (safe, optional) -->
   <section id="ocnj-faq" class="ocnj-faq" aria-labelledby="ocnj-faq-title">
-    <div class="ocnj-section__inner">
-      <h2 id="ocnj-faq-title">Ocean City Real Estate FAQ</h2>
-      <p>Your on-island expert answers to common questions about buying, selling, investing, and living in Ocean City, NJ.</p>
+    <div class="ocnj-section__inner" style="max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+      <h2 id="ocnj-faq-title" style="font-size: clamp(2rem,4vw,2.75rem); font-weight: 700; text-align: center; margin-bottom: 1.5rem; color: #1f2937;">Ocean City Real Estate FAQ</h2>
+      <p style="font-size: 1.125rem; text-align: center; color: #6b7280; max-width: 700px; margin: 0 auto 2rem;">Your on-island expert answers to common questions about buying, selling, investing, and living in Ocean City, NJ.</p>
 
       <?php
       if (function_exists('locnj_render_global_faq')) {

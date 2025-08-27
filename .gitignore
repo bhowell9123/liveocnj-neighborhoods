@@ -1,22 +1,83 @@
-# OS/IDE
+# Archive directories (historical files not needed in Git)
+archive/
+backups/
+
+# WordPress specific
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/blogs.dir/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/updraft/
+wp-content/backupwordpress-*/
+wp-content/managewp/
+
+# Log files
+*.log
+error_log
+debug.log
+
+# Temporary files
+*.tmp
+*.temp
+*~
 .DS_Store
 Thumbs.db
+
+# IDE and editor files
 .vscode/
 .idea/
-*.code-workspace
+*.swp
+*.swo
+*~
 
-# Builds & temp
-*.zip
-*.log
-tmp/
-temp/
-backups/
-archive/releases/
-
-# Dependencies (future-proof)
+# Node modules (if any)
 node_modules/
+npm-debug.log*
+
+# Composer (if any)
 vendor/
 
-# WP noise if wp-content is ever present
-wp-content/uploads/
+# Environment files
+.env
+.env.local
+.env.production
+
+# Build files
+dist/
+build/
+
+# Cache files
+.cache/
+*.cache
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*_backup
+*_old
+
+# ZIP files (unless specifically needed)
+*.zip
+*.tar.gz
+*.rar
+
+# Database dumps
+*.sql
+*.sqlite
+
+# WordPress debug files
 wp-content/debug.log

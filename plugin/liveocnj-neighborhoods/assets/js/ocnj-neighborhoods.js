@@ -1,6 +1,6 @@
 /**
  * OCNJ Neighborhoods JavaScript
- * 
+ *
  * Implements:
  * 1. Key handlers on card elements (Enter/Space to open modal)
  * 2. Modal focus trap
@@ -9,6 +9,9 @@
  * 5. CTA links inside modal and detail pages
  * 6. Accessibility features (ESC key, click outside, screen-reader isolation)
  */
+
+// OCNJ Neighborhoods script initialization
+console.log('OCNJ Neighborhoods script loaded');
 
 (() => {
   /**
@@ -374,8 +377,21 @@
         }
       }
       
-      // Click handler to open the modal
-      card.addEventListener('click', () => openModalFromCard(card));
+      // Click handler to open the modal, but exclude "Read the guide" link
+      card.addEventListener('click', (e) => {
+        // Check if the click target is the "Read the guide" link or its parent
+        const target = e.target;
+        const isGuideLink = target.closest('.ocnj-card__link a') ||
+                           (target.tagName === 'A' && target.textContent.includes('Read the guide'));
+        
+        // If it's the guide link, allow default behavior (follow the link)
+        if (isGuideLink) {
+          return;
+        }
+        
+        // Otherwise open the modal
+        openModalFromCard(card);
+      });
       
       // Keyboard handler for Enter/Space to open the modal
       card.addEventListener('keydown', e => {
@@ -386,8 +402,14 @@
       });
     });
     
-    // Optional: avoid double tab-stops when JS is on
+    // Keep "Read the guide" links accessible, but make other card links hidden
     root.querySelectorAll('.ocnj-neighborhood-card .ocnj-card-link').forEach(a => {
+      // Skip "Read the guide" links
+      if (a.textContent.includes('Read the guide')) {
+        return;
+      }
+      
+      // Hide other links
       a.tabIndex = -1;
       a.setAttribute('aria-hidden', 'true');
     });
@@ -460,4 +482,7 @@
       });
     });
   });
+
+  // FAQ Accordion functionality is now handled by ocnj-faq-accordion.js
+  // This prevents duplicate initialization and multiple icons
 })();

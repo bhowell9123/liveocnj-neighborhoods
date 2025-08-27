@@ -19,15 +19,24 @@ defined('ABSPATH') || exit;
 
 if (!function_exists('locnj_render_global_faq')) {
   function locnj_render_global_faq() {
-    $faq_file = dirname(LOCNJ_NEIGHBORHOODS_FILE) . '/assets/data/faq.json';
-    if (!file_exists($faq_file)) {
-      echo '<!-- FAQ JSON not found -->';
-      return;
-    }
+    // First try to get data from WordPress option
+    $option_data = get_option('locnj_faq_data');
+    
+    if ($option_data) {
+      $json = json_decode($option_data, true);
+    } else {
+      // Fallback to file-based JSON if option is not set
+      $faq_file = dirname(LOCNJ_NEIGHBORHOODS_FILE) . '/assets/data/faq.json';
+      if (!file_exists($faq_file)) {
+        echo '<!-- FAQ data not found (neither option nor file) -->';
+        return;
+      }
 
-    $json = json_decode(file_get_contents($faq_file), true);
+      $json = json_decode(file_get_contents($faq_file), true);
+    }
+    
     if (!$json) {
-      echo '<!-- Invalid FAQ JSON -->';
+      echo '<!-- Invalid FAQ JSON data -->';
       return;
     }
 
@@ -41,11 +50,30 @@ if (!function_exists('locnj_render_global_faq')) {
       return trim($s,'-');
     };
 
-    // Detect grouped vs flat
-    $is_grouped = isset($json[0]['items']) && is_array($json[0]['items']);
-
-    if ($is_grouped) {
-      // Already grouped
+    // Check if this is the new format with categories
+    if (isset($json['categories']) && is_array($json['categories'])) {
+      foreach ($json['categories'] as $category) {
+        if (empty($category['questions']) || !is_array($category['questions'])) continue;
+        $key = $slugify($category['title']);
+        $groups[$key] = [
+          'title' => $category['title'],
+          'items' => []
+        ];
+        
+        // Convert questions format
+        foreach ($category['questions'] as $question) {
+          if (!empty($question['question']) && !empty($question['answer'])) {
+            $groups[$key]['items'][] = [
+              'q' => $question['question'],
+              'a' => $question['answer']
+            ];
+          }
+        }
+      }
+    }
+    // Fallback to legacy formats
+    else if (isset($json[0]['items']) && is_array($json[0]['items'])) {
+      // Legacy grouped format
       foreach ($json as $group) {
         if (empty($group['items']) || !is_array($group['items'])) continue;
         $key   = !empty($group['category']) ? $slugify($group['category']) : $slugify($group['title']);
@@ -123,6 +151,9 @@ if (!function_exists('locnj_render_global_faq')) {
       }
     }
     echo '  </div>';
+    
+    // FAQ accordion JavaScript is now properly enqueued in the main plugin file
+    
     echo '</section>';
   }
 }

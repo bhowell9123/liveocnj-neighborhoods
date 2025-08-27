@@ -581,3 +581,88 @@ body.page-id-169371 .ocnj-stats li + li::before {
   margin: 0 18px;
   opacity: .6;
 }
+
+/* FAQ Accordion Styles - Simplified */
+/* Apply to all FAQ items regardless of structure */
+.ocnj-faq-item,
+.schema-faq-section,
+.wp-block-yoast-faq-block .schema-faq-section {
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 0;
+  padding-bottom: 5px;
+}
+
+/* Style all question elements */
+.ocnj-faq-item h3,
+.schema-faq-question,
+.wp-block-yoast-faq-block .schema-faq-question {
+  position: relative;
+  padding: 15px 40px 15px 0;
+  margin: 0;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect for all questions */
+.ocnj-faq-item h3:hover,
+.schema-faq-question:hover,
+.wp-block-yoast-faq-block .schema-faq-question:hover {
+  color: #03989e;
+}
+
+/* Style all answer elements */
+.ocnj-faq-item div,
+.schema-faq-answer,
+.wp-block-yoast-faq-block .schema-faq-answer {
+  padding: 0 0 15px 0;
+  margin: 0;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animation for showing answers */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Table of Contents styling */
+.ocnj-faq-toc,
+.table-of-contents {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.ocnj-faq-toc h3,
+.table-of-contents h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.ocnj-faq-toc a,
+.table-of-contents a {
+  color: #03989e;
+  text-decoration: none;
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.ocnj-faq-toc a:hover,
+.table-of-contents a:hover {
+  text-decoration: underline;
+}
+
+/* Style for the dynamically added plus/minus icons */
+.faq-icon {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: #03989e;
+  transition: transform 0.3s ease;
+}
